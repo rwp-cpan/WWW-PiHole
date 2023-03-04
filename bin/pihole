@@ -1,5 +1,7 @@
 #! /usr/bin/env perl
 
+# PODNAME: pihole
+# ABSTRACT: CLI interface to the WWW::PiHole module
 
 use v5.37.9;
 use WWW::PiHole;
