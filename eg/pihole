@@ -25,4 +25,4 @@ my $pihole = WWW::PiHole -> new;
 # p $pihole -> add_cname( 'redirect.this' , 'www.example.com' );
 # p $pihole -> remove_cname( 'redirect.this' , 'www.example.com' );
 
-say $pihole -> version( 'latest' ); # Modes: 'update', 'current', 'latest', 'branch'
+say $pihole -> version( 'latest1' ); # Modes: 'update', 'current', 'latest', 'branch'

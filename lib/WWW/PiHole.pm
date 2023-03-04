@@ -10,6 +10,8 @@ class WWW::PiHole {
   use URI;
   use HTTP::Tiny;
   use JSON::PP;
+  use Syntax::Operator::In;
+  use Term::ANSIColor;
 
   # @formatter:off
 
@@ -34,6 +36,13 @@ class WWW::PiHole {
 
   method version ( $mode = 'current' ) {
     # Modes: 'update', 'current', 'latest', 'branch'
+
+    #@formatter:off
+
+    die colored ['bright_red', 'bold'], 'Bad mode'
+      unless $mode in:eq ( 'update' , 'current' , 'latest' , 'branch' );
+
+    #@formatter :on
 
     $uri -> query_param( versions => undef );
 
