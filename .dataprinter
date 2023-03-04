@@ -1,11 +1,22 @@
+; -*- ini -*-
+
 indent = 2
+
 theme = Monokai
+
 scalar_quotes = '
+
 hash_separator = ' '
+
 show_refcount = 1
+
 show_memsize = 1
 ; Requires the "Devel::Size" module
+
 end_separator = 1
+
 caller_info = 1
+
 ; deparse = 1
+
 class.show_reftype = 1
