@@ -36,16 +36,40 @@ class WWW::PiHole {
     $self -> _status( $uri );
   }
 
+=method enable()
+
+Enable Pi-Hole
+
+Returns the status ('enabled')
+
+=cut
+
   method disable ( ) {
     $uri -> query_param( auth => $auth );
     $uri -> query_param( disable => undef );
     $self -> _status( $uri );
   }
 
+=method disable()
+
+Disable Pi-Hole
+
+Returns the status ('disabled')
+
+=cut
+
   method status ( ) {
     $uri -> query_param( status => undef );
     $self -> _status( $uri );
   }
+
+=method status()
+
+Get Pi-Hole status
+
+Returns 'enabled' or 'disabled'    
+
+=cut
 
   method add ( $domain , $list = 'black' ) {
     $uri -> query_param( auth => $auth );
@@ -54,8 +78,15 @@ class WWW::PiHole {
     $self -> _list( $uri );
   }
 
-  # supported lists: black, regex_black, white, regex_white
-  # URL: http://pi.hole/admin/groups-domains.php
+=method add
+
+Add domain to the blacklist (by default)
+
+C<$list> can be one of: C<black>, C<regex_black>, C<white>, C<regex_white>
+
+URL: http://pi.hole/admin/groups-domains.php
+
+=cut
 
   method remove ( $domain , $list = 'black' ) {
     $uri -> query_param( auth => $auth );
@@ -64,10 +95,31 @@ class WWW::PiHole {
     $self -> _list( $uri );
   }
 
+=method remove($domain [, $list])
+
+Add domain to the blacklist (by default)
+
+C<$list> can be one of: C<black>, C<regex_black>, C<white>, C<regex_white>
+
+AdminLTE API Function: C<sub>
+
+URL: http://pi.hole/admin/groups-domains.php
+
+=cut
+
   method recent ( ) {
     $uri -> query_param( recentBlocked => undef );
     $http -> get( $uri ) -> {content}; # domain name
   }
+
+=method recent()
+
+Get the most recently blocked domain name
+
+AdminLTE API Function: C<recentBlocked>
+
+=cut
+
 
   method add_dns ( $domain , $ip ) {
 
@@ -82,6 +134,12 @@ class WWW::PiHole {
     # https://github.com/pi-hole/AdminLTE/blob/b29a423b9553654f113bcdc8a82296eb6e4613d7/scripts/pi-hole/php/func.php#L223
 
   }
+
+=method add_dns($domain, $ip)
+
+Add DNS A record mapping domain name to an IP address
+
+=cut
 
   method remove_dns ( $domain , $ip ) {
 
@@ -108,6 +166,19 @@ class WWW::PiHole {
     $http -> get( $uri ) -> {content}; # domain name
 
   }
+
+=method add_cname($domain, $target)
+
+Add DNS CNAME record effectively redirecting one domain to another
+
+AdminLTE API Functions: C<customcname>, C<addCustomCNAMEEntry>
+
+See the L<https://github.com/pi-hole/AdminLTE/blob/master/scripts/pi-hole/php/func.php|func.php> script
+
+URL: http://localhost/admin/cname_records.php
+
+=cut
+
 
   method remove_cname ( $domain , $target ) {
 
