@@ -32,6 +32,19 @@ class WWW::PiHole {
     }
   }
 
+  method version ( $mode = 'current' ) {
+    # Modes: 'update', 'current', 'latest', 'branch'
+
+    $uri -> query_param( versions => undef );
+
+    my $hash = $json -> decode( $http -> get( $uri ) -> {content} );
+
+    sprintf "Core: %s, Web: %s, FTL: %s\n" ,
+      $hash -> {join '_' , 'core' , $mode} ,
+      $hash -> {join '_' , 'core' , $mode} ,
+      $hash -> {join '_' , 'core' , $mode} ,
+  }
+
   method enable ( ) {
     $uri -> query_param( auth => $auth );
     $uri -> query_param( enable => undef );
@@ -197,3 +210,4 @@ URL: http://localhost/admin/cname_records.php
 }
 
 # https://github.com/pi-hole/AdminLTE/blob/master/api.php
+# https://github.com/pi-hole/AdminLTE/blob/master/scripts/pi-hole/php/func.php

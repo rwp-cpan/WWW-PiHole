@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="pihole" type="#PerlConfigurationType" factoryName="Perl" nameIsGenerated="true" show_console_on_std_err="false" show_console_on_std_out="false">
+    <option name="allowRunningInParallel" value="false" />
+    <option name="alternativeSdkName" />
+    <option name="compileTimeBreakpointsEnabled" value="false" />
+    <option name="consoleCharset" value="UTF-8" />
+    <option name="envs">
+      <map />
+    </option>
+    <option name="initCode" value="" />
+    <option name="nonInteractiveModeEnabled" value="false" />
+    <option name="passParentEnvs" value="true" />
+    <option name="perlParameters" value="" />
+    <option name="programParameters" value="" />
+    <option name="projectPathOnTarget" />
+    <option name="scriptCharset" value="utf8" />
+    <option name="scriptPath" value="$PROJECT_DIR$/eg/pihole" />
+    <option name="selectedOptions">
+      <list />
+    </option>
+    <option name="startMode" value="RUN" />
+    <option name="useAlternativeSdk" value="false" />
+    <option name="workingDirectory" value="" />
+    <method v="2" />
+  </configuration>
+</component>
