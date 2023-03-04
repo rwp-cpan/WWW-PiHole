@@ -1,0 +1,12 @@
+<component name="CopyrightManager">
+  <settings>
+    <LanguageOptions name="Perl5 Package">
+      <option name="fileTypeOverride" value="3" />
+      <option name="block" value="false" />
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+      <option name="prefixLines" value="false" />
+      <option name="filler" value="=" />
+    </LanguageOptions>
+  </settings>
+</component>
