@@ -210,6 +210,13 @@ ie. IP to domain name association
     $self -> _content_json -> {data};
   }
 
+=method get_dns()
+
+Get DNS records as an array of two-element arrays (IP and domain)
+
+=cut
+
+
   method add_cname ( $domain , $target ) {
 
     $uri -> query_param( auth => $auth );
@@ -228,7 +235,7 @@ Add DNS CNAME record effectively redirecting one domain to another
 
 AdminLTE API Functions: C<customcname>, C<addCustomCNAMEEntry>
 
-See the L<https://github.com/pi-hole/AdminLTE/blob/master/scripts/pi-hole/php/func.php|func.php> script
+See the L<func.php|https://github.com/pi-hole/AdminLTE/blob/master/scripts/pi-hole/php/func.php> script
 
 URL: http://localhost/admin/cname_records.php
 
@@ -261,6 +268,13 @@ Remove DNS CNAME record
 
     $self -> _content_json -> {data};
   }
+
+=method get_cname()
+
+Get CNAME records as an array of two-element arrays (domain and target)
+
+=cut
+
 
 }
 
