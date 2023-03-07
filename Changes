@@ -3,6 +3,11 @@ Revision history for Perl distribution WWW-PiHole
 This is a changelog file in addition to git commit messages.
 
 {{$NEXT}}
+  - Document all methods
+  - Modify private methods
+  - Improve general documentation
+  - Add get_dns public method
+  - Add get_cname public method
 
 0.230630  2023-03-05 00:42:44+04:00 Asia/Baku
   - Release to CPAN

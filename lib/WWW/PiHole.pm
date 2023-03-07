@@ -23,14 +23,22 @@ class WWW::PiHole {
   my $http = HTTP::Tiny -> new;
   my $json = JSON::PP -> new;
 
+  method _content ( ) {
+    $http -> get( $uri ) -> {content};
+  }
+
+  method _content_json ( ) {
+    $json -> decode( $http -> get( $uri ) -> {content} ); # 'content' is HTTP response body
+  }
+
   method _status ( $uri ) {
-    $json -> decode( $http -> get( $uri ) -> {content} ) -> {status};
+    $self -> _content_json -> {status};
   }
 
   method _list ( $uri ) {
-    my $hash = $json -> decode( $http -> get( $uri ) -> {content} );
-    if ( $hash -> {success} ) { # JSON::PP::Boolean
-      $hash -> {message};       # {"success":true,"message":null}
+    my $json_body = $self -> _content_json;
+    if ( $json_body -> {success} ) { # JSON::PP::Boolean
+      $json_body -> {message};       # {"success":true,"message":null}
     }
   }
 
@@ -40,7 +48,7 @@ class WWW::PiHole {
     #@formatter:off
 
     die colored ['bright_red', 'bold'], 'Bad mode'
-      unless $mode in:eq ( 'update' , 'current' , 'latest' , 'branch' );
+      unless $mode in : eq ( 'update' , 'current' , 'latest' , 'branch' );
 
     #@formatter :on
 
@@ -53,6 +61,12 @@ class WWW::PiHole {
       $hash -> {join '_' , 'core' , $mode} ,
       $hash -> {join '_' , 'core' , $mode} ,
   }
+
+=method version([$mode])
+
+Get the version string for Pi-hole components
+
+=cut
 
   method enable ( ) {
     $uri -> query_param( auth => $auth );
@@ -102,9 +116,9 @@ Returns 'enabled' or 'disabled'
     $self -> _list( $uri );
   }
 
-=method add
+=method add($domain [, $list])
 
-Add domain to the blacklist (by default)
+Add a domain to the blacklist (by default)
 
 C<$list> can be one of: C<black>, C<regex_black>, C<white>, C<regex_white>
 
@@ -121,7 +135,7 @@ URL: http://pi.hole/admin/groups-domains.php
 
 =method remove($domain [, $list])
 
-Add domain to the blacklist (by default)
+Remove a domain from the blacklist (by default)
 
 C<$list> can be one of: C<black>, C<regex_black>, C<white>, C<regex_white>
 
@@ -133,7 +147,7 @@ URL: http://pi.hole/admin/groups-domains.php
 
   method recent ( ) {
     $uri -> query_param( recentBlocked => undef );
-    $http -> get( $uri ) -> {content}; # domain name
+    $self -> content; # domain name
   }
 
 =method recent()
@@ -144,7 +158,6 @@ AdminLTE API Function: C<recentBlocked>
 
 =cut
 
-
   method add_dns ( $domain , $ip ) {
 
     $uri -> query_param( auth => $auth );
@@ -153,7 +166,7 @@ AdminLTE API Function: C<recentBlocked>
     $uri -> query_param( domain => $domain );
     $uri -> query_param( ip => $ip );
 
-    $http -> get( $uri ) -> {content}; # domain name
+    $self -> _content; # domain name
 
     # https://github.com/pi-hole/AdminLTE/blob/b29a423b9553654f113bcdc8a82296eb6e4613d7/scripts/pi-hole/php/func.php#L223
 
@@ -175,8 +188,26 @@ Add DNS A record mapping domain name to an IP address
     $uri -> query_param( domain => $domain );
     $uri -> query_param( ip => $ip );
 
-    $http -> get( $uri ) -> {content}; # domain name
+    $self -> _content; # domain name
 
+  }
+
+=method remove_dns($domain, $ip)
+
+Remove a custom DNS A record
+
+ie. IP to domain name association
+
+=cut
+
+  
+  method get_dns ()
+  {
+    $uri -> query_param( auth => $auth );
+    $uri -> query_param( customdns => undef );
+    $uri -> query_param( action => 'get' );
+
+    $self -> _content_json -> {data};
   }
 
   method add_cname ( $domain , $target ) {
@@ -187,7 +218,7 @@ Add DNS A record mapping domain name to an IP address
     $uri -> query_param( domain => $domain );
     $uri -> query_param( target => $target );
 
-    $http -> get( $uri ) -> {content}; # domain name
+    $self -> _content; # domain name
 
   }
 
@@ -203,7 +234,6 @@ URL: http://localhost/admin/cname_records.php
 
 =cut
 
-
   method remove_cname ( $domain , $target ) {
 
     $uri -> query_param( auth => $auth );
@@ -212,8 +242,24 @@ URL: http://localhost/admin/cname_records.php
     $uri -> query_param( domain => $domain );
     $uri -> query_param( target => $target );
 
-    $http -> get( $uri ) -> {content}; # domain name
+    $self -> _content; # domain name
 
+  }
+
+
+=method remove_cname($domain, $target)
+
+Remove DNS CNAME record
+
+=cut
+
+  method get_cname ()
+  {
+    $uri -> query_param( auth => $auth );
+    $uri -> query_param( customcname => undef );
+    $uri -> query_param( action => 'get' );
+
+    $self -> _content_json -> {data};
   }
 
 }
