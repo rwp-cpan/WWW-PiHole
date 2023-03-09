@@ -1,7 +1,7 @@
 # ABSTRACT: Perl interface to Pi-hole
 
 use v5.37.9;
-use experimental qw( class builtin try );
+use experimental qw( class );
 
 package WWW::PiHole;
 
