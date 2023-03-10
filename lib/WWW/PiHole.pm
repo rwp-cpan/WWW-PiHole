@@ -28,7 +28,7 @@ class WWW::PiHole {
   }
 
   method _content_json ( ) {
-    $json -> decode( $http -> get( $uri ) -> {content} ); # 'content' is HTTP response body
+    $json -> decode( $self -> _content ); # 'content' is HTTP response body
   }
 
   method _status ( $uri ) {
@@ -45,16 +45,16 @@ class WWW::PiHole {
   method version ( $mode = 'current' ) {
     # Modes: 'update', 'current', 'latest', 'branch'
 
-    #@formatter:off
+    # @formatter:off
 
     die colored ['bright_red', 'bold'], 'Bad mode'
       unless $mode in : eq ( 'update' , 'current' , 'latest' , 'branch' );
 
-    #@formatter :on
+    # @formatter:on
 
     $uri -> query_param( versions => undef );
 
-    my $hash = $json -> decode( $http -> get( $uri ) -> {content} );
+    my $hash = $self -> _content_json;
 
     sprintf "Core: %s, Web: %s, FTL: %s\n" ,
       $hash -> {join '_' , 'core' , $mode} ,
@@ -204,9 +204,8 @@ AdminLTE Function: C<deleteCustomDNSEntry>
 
 =cut
 
-  
-  method get_dns ()
-  {
+
+  method get_dns ( ) {
     $uri -> query_param( auth => $auth );
     $uri -> query_param( customdns => undef );
     $uri -> query_param( action => 'get' );
@@ -269,8 +268,7 @@ Remove DNS CNAME record
 
 =cut
 
-  method get_cname ()
-  {
+  method get_cname ( ) {
     $uri -> query_param( auth => $auth );
     $uri -> query_param( customcname => undef );
     $uri -> query_param( action => 'get' );
@@ -286,7 +284,6 @@ AdminLTE API: C<customcname>
 AdminLTE Function: C<echoCustomDNSEntries>
 
 =cut
-
 
 }
 
